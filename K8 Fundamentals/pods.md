@@ -23,3 +23,5 @@ spec:
 - ``name``: It indicates the list of the names; and alos indicates the first item in the list
 
 - ``apiVersion``, ``kind``, ``metdata``, ``spec`` are always the part of every definition (manifests) file. 
+
+- ``-f``: Is to represent the files 

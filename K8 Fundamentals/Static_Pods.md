@@ -1,6 +1,6 @@
 # Static POD's
 
-- ## ** Sceanrio ** -  
+- ## **Sceanrio** -  
 
 ### If masternode is not present and if only kubelet is present then can it create PODS ??
 

@@ -93,4 +93,64 @@ status:
 
 # ``CLUSTER IP SERVICE``
 
+- To establish the connectivity between the tiers [Front End, Back End, Database] we use the ClusterIP Services.
+- It is also the default type of service
 
+## Pods alos have IP's so can we use them to make a connection ?
+- **NO** Should not use the POD IP's as if the Pods get down the IP will also change in that case
+- The solution is to provide the K8's service and provide a single interface to access POD in a group
+
+![Alt text](image1.png)
+
+## What if the POD A Want to communicate to the POD B then what should it do ?
+- The request will go to the service DB and then the Service DB will forwar it to the POD B
+- Here this Cluster Service helps to scale our MicroServices; each service will get its own IP and Name Assigned to it; the name should be used by other PODs to access services this type of service called as ``Cluster IP``.
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: new-service
+  name: new-service
+spec:
+  ports:
+  - port: 80 # Port of the POD [Where BE is exposed]
+    targetPort: 80 # Port where service is exposed
+  selector:
+    app: new-service
+  type: ClusterIP
+status:
+  loadBalancer: {}
+```
+# ``Load Balancer Service``
+- ``Scenario``
+
+- **What if external user want to acces our App and it is  shared across different nodes?**
+- **User do not want to have the user <IP>:<PORT> each time they want to acces the App**
+
+- The solution is to use the Load Balancer Service.
+
+- This type of  service is only supoported only when the Load balancer is natively available like AWS, Azure, GCP
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: new-service
+  name: new-service
+spec:
+  ports:
+  - name: 80-80
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: new-service
+  type: NodePort
+status:
+  loadBalancer: {}
+```
